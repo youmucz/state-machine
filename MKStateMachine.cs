@@ -117,5 +117,10 @@ namespace Minikit.StateMachine
                 yield return null;
             }
         }
+
+        public IEnumerable<MKSMState> GetStates()
+        {
+            return states;
+        }
     }
 } // Minikit.StateMachine namespace
