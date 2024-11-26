@@ -19,10 +19,19 @@ public partial class Transition : NodeStateMachine
         get => _targetState;
     }
     private State _targetState;
+    private State _ownerState;
+    
+    private StateMachine _stateMachine;
 
     public Transition()
     {
         
+    }
+
+    public virtual void Setup(State ownerState, StateMachine stateMachine)
+    {
+        _ownerState = ownerState;
+        _stateMachine = stateMachine;
     }
     
 #if TOOLS

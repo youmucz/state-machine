@@ -25,20 +25,7 @@ public partial class State : NodeStateMachine
         
         if (Engine.IsEditorHint()) return;
         
-        GD.Print($"State {GetStateName()} Ready.");
-        
-        foreach (var child in GetChildren())
-        {
-            switch (child)
-            {
-                case Transition transition:
-                    Transitions.Add(transition);
-                    break;
-                case State state:
-                    States.Add(state);
-                    break;
-            }
-        }
+        GD.Print($"Root {GetStateName()} Ready.");
     }
 #if TOOLS
     public override string[] _GetConfigurationWarnings()
@@ -67,12 +54,27 @@ public partial class State : NodeStateMachine
     public virtual void Setup(StateMachine stateMachine)
     {
         _stateMachine = stateMachine;
+        
+        foreach (var child in GetChildren())
+        {
+            switch (child)
+            {
+                case Transition transition:
+                    transition.Setup(this, _stateMachine);
+                    Transitions.Add(transition);
+                    break;
+                case State state:
+                    state.Setup(_stateMachine);
+                    States.Add(state);
+                    break;
+            }
+        }
     }
 
     public virtual string GetStateName() {return GetType().Name;}
     
     /// <summary>
-    /// // Handle any transitions that want to take place
+    /// Handle any transitions that want to take place
     /// </summary>
     /// <returns></returns>
     public virtual State ProcessTransition() 
@@ -88,6 +90,13 @@ public partial class State : NodeStateMachine
         }
 
         return null;
+    }
+
+    public virtual void DoTransition(Transition transition)
+    {
+        if (!Active) return;
+        
+        
     }
 
     public virtual void OnEnter() { Active = true; }

@@ -9,32 +9,35 @@ namespace Minikit.StateMachine
     [Tool, GlobalClass, Icon("res://addons/state-machine/assets/state_machine.svg")]
     public partial class StateMachine : NodeStateMachine
     {
-        [Export] public bool AutoStart = false;
+        [Export] private bool _autoStart = false;
+        
+        /// <summary> The running state node. </summary>
+        public State Root
+        {
+            get => _root;
+            private set
+            {
+                _root?.OnExit();
+
+                var oldState = _root;
+                _root = value;
+                OnStateChanged.Invoke(oldState, _root);
+
+                _root?.OnEnter();
+            }
+        }
+        /// <summary> The running state node. </summary>
+        private State _root;
+        
+        /// <summary> The root state of beginning </summary>
+        private State _entryState;
+        
+        /// <summary> State machine tick coroutine. </summary>
+        private Coroutine _tickCoroutine;
         
         public readonly Action<State, State> OnStateChanged = delegate { };
         public readonly Action OnStarted = delegate { };
         public readonly Action OnStopped = delegate { };
-
-        public State State
-        {
-            get => _state;
-            private set
-            {
-                _state?.OnExit();
-
-                var oldState = _state;
-                _state = value;
-                OnStateChanged.Invoke(oldState, _state);
-
-                _state?.OnEnter();
-            }
-        }
-        private State _state;
-        private State _entryState;
-        private List<State> _states = new();
-        
-        private readonly Dictionary<State, List<Transition>> _stateTransitionsByState = new();
-        private Coroutine _tickCoroutine;
 
         public override void _Ready()
         {
@@ -42,8 +45,9 @@ namespace Minikit.StateMachine
             
             Setup();
             
-            if (AutoStart) Start();
+            if (_autoStart) Start();
         }
+        
 #if TOOLS
         public override string[] _GetConfigurationWarnings()
         {
@@ -78,20 +82,6 @@ namespace Minikit.StateMachine
             }
             
             _entryState.Setup(this);
-            
-            // _entryState = CreateStates(out _states, out var transitions);
-            //
-            // foreach (var transition in transitions)
-            // {
-            //     if (_stateTransitionsByState.TryGetValue(transition.CurrentState, out var value))
-            //     {
-            //         value.Add(transition);
-            //     }
-            //     else
-            //     {
-            //         _stateTransitionsByState.Add(transition.CurrentState, new List<Transition>() { transition });
-            //     }
-            // }
         }
 
         public void Start()
@@ -107,7 +97,7 @@ namespace Minikit.StateMachine
             {
                 OnStarted.Invoke();
 
-                State = _entryState;
+                Root = _entryState;
                 
                 _tickCoroutine = CoroutineManager.Instance.StartCoroutine(Tick());
             }
@@ -122,7 +112,7 @@ namespace Minikit.StateMachine
                 CoroutineManager.Instance.StopCoroutine(_tickCoroutine);
                 _tickCoroutine = null;
 
-                State = null;
+                Root = null;
 
                 OnStopped.Invoke();
             }
@@ -136,22 +126,40 @@ namespace Minikit.StateMachine
 
         public virtual IEnumerator Tick()
         {
-            while (State != null)
+            while (Root != null)
             {
-                var state = State.ProcessTransition();
-                
-                if (state != null)
-                {
-                    State = state;
-                }
-                
+                Root.ProcessTransition();
                 yield return null;
             }
         }
-
-        public IEnumerable<State> GetStates()
+        
+        /// <summary>
+        /// Sends an event to this state machine. The event will be passed to the innermost active state first and
+        /// is then moving up in the tree until it is consumed. Events will trigger transitions and actions via emitted
+        /// signals. There is no guarantee when the event will be processed. The state machine will process the event
+        /// as soon as possible but there is no guarantee that the event will be fully processed when this method returns.
+        /// </summary>
+        /// <param name="name"></param>
+        public void SendEvent(StringName name)
         {
-            return _states;
+            
+        }
+        
+        /// <summary>
+        /// ## Allows states to queue a transition for running. This will eventually run the transition
+        /// once all currently running transitions have finished. States should call this method
+        /// when they want to transition away from themselves.
+        /// </summary>
+        /// <param name="transition"></param>
+        /// <param name="fromState"></param>
+        public void RunTransition(Transition transition, State fromState)
+        {
+            
+        }
+
+        public void DoTransitionTo(State newState)
+        {
+            
         }
     }
 }
