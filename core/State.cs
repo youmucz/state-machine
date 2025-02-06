@@ -5,7 +5,7 @@ using Godot.Collections;
 using Minikit.StateMachine;
 
 
-[Tool, GlobalClass, Icon("res://addons/state-machine/assets/atomic_state.svg")]
+[Tool, GlobalClass, Icon("res://addons/state_machine/assets/atomic_state.svg")]
 public partial class State : NodeStateMachine
 {
     public bool Active { get; set; }

@@ -3,7 +3,7 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://byircnecmap3x"
-path="res://.godot/imported/atomic_state.svg-44cda8c4865a009c66c8d14dcfc70804.ctex"
+path="res://.godot/imported/atomic_state.svg-8ae30273a60af75de544a8eac4193a35.ctex"
 metadata={
 "has_editor_variant": true,
 "vram_texture": false
@@ -11,8 +11,8 @@ metadata={
 
 [deps]
 
-source_file="res://addons/state-machine/assets/atomic_state.svg"
-dest_files=["res://.godot/imported/atomic_state.svg-44cda8c4865a009c66c8d14dcfc70804.ctex"]
+source_file="res://addons/state_machine/assets/atomic_state.svg"
+dest_files=["res://.godot/imported/atomic_state.svg-8ae30273a60af75de544a8eac4193a35.ctex"]
 
 [params]
 

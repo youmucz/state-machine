@@ -6,7 +6,7 @@ using Minikit.StateMachine;
 /// <summary>
 /// ## A parallel state is a state which can have sub-states, all of which are active when the parallel state is active.
 /// </summary>
-[Tool, GlobalClass, Icon("res://addons/state-machine/assets/parallel_state.svg")]
+[Tool, GlobalClass, Icon("res://addons/state_machine/assets/parallel_state.svg")]
 public partial class ParallelState : State
 {
     public ParallelState()

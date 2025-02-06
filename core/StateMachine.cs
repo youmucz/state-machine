@@ -6,7 +6,7 @@ using HCoroutines;
 
 namespace Minikit.StateMachine
 {
-    [Tool, GlobalClass, Icon("res://addons/state-machine/assets/state_machine.svg")]
+    [Tool, GlobalClass, Icon("res://addons/state_machine/assets/state_machine.svg")]
     public partial class StateMachine : NodeStateMachine
     {
         [Export] private bool _autoStart = false;
@@ -53,14 +53,14 @@ namespace Minikit.StateMachine
         {
             if (GetChildCount() != 1)
             {
-                return new[] { "Entered state-machine must have exactly one child (ParallelState or CompoundState)" };
+                return new[] { "Entered state_machine must have exactly one child (ParallelState or CompoundState)" };
             }
 
             foreach (var child in GetChildren())
             {
                 if (child is ParallelState parallelState || child is CompoundState compoundState) break;
                 
-                return new[] { "Entered state-machine must have exactly one child (ParallelState or CompoundState)" };
+                return new[] { "Entered state_machine must have exactly one child (ParallelState or CompoundState)" };
             }
             
             return base._GetConfigurationWarnings();
@@ -86,7 +86,7 @@ namespace Minikit.StateMachine
 
         public void Start()
         {
-            GD.Print("Starting state-machine ...");
+            GD.Print("Starting state_machine ...");
             
             if (_entryState == null)
             {
@@ -105,7 +105,7 @@ namespace Minikit.StateMachine
 
         public void Stop()
         {
-            GD.Print("Stopping state-machine ...");
+            GD.Print("Stopping state_machine ...");
             
             if (_tickCoroutine != null)
             {

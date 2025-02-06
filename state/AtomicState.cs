@@ -8,7 +8,7 @@ using Minikit.StateMachine;
 /// <summary>
 /// This is a state that has no sub_states.
 /// </summary>
-[Tool, GlobalClass, Icon("res://addons/state-machine/assets/atomic_state.svg")]
+[Tool, GlobalClass, Icon("res://addons/state_machine/assets/atomic_state.svg")]
 public partial class AtomicState : State
 {
     public AtomicState()

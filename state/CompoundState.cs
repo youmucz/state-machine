@@ -3,7 +3,7 @@ using System;
 using System.Linq;
 using Minikit.StateMachine;
 
-[Tool, GlobalClass, Icon("res://addons/state-machine/assets/compound_state.svg")]
+[Tool, GlobalClass, Icon("res://addons/state_machine/assets/compound_state.svg")]
 public partial class CompoundState : State
 {
     [Export]

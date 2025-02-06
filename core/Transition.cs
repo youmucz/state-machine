@@ -4,7 +4,7 @@ using Godot;
 using Minikit.StateMachine;
 
 
-[Tool, GlobalClass, Icon("res://addons/state-machine/assets/transition.svg")]
+[Tool, GlobalClass, Icon("res://addons/state_machine/assets/transition.svg")]
 public partial class Transition : NodeStateMachine
 {
     [Export]
